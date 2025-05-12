@@ -1,10 +1,29 @@
 
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
+import { useAuth } from '@/contexts/AuthContext';
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { user, isAuthenticated, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    await logout();
+    navigate('/');
+    setIsMobileMenuOpen(false);
+  };
+
+  const handleLoginClick = () => {
+    navigate('/login');
+    setIsMobileMenuOpen(false);
+  };
+
+  const handleRegisterClick = () => {
+    navigate('/register');
+    setIsMobileMenuOpen(false);
+  };
 
   return (
     <nav className="border-b border-cyber/30 backdrop-blur-sm">
@@ -31,12 +50,34 @@ const Navbar = () => {
           </div>
 
           <div className="hidden md:flex items-center space-x-3">
-            <Button variant="outline" className="border-cyber text-cyber hover:bg-cyber hover:text-black">
-              Iniciar Sessió
-            </Button>
-            <Button className="bg-cyber text-black hover:bg-cyber/80">
-              Registrar-se
-            </Button>
+            {isAuthenticated ? (
+              <>
+                <span className="text-gray-300 mr-2">Hola, {user?.username}</span>
+                <Button 
+                  variant="outline" 
+                  className="border-cyber text-cyber hover:bg-cyber hover:text-black"
+                  onClick={handleLogout}
+                >
+                  Tancar Sessió
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button 
+                  variant="outline" 
+                  className="border-cyber text-cyber hover:bg-cyber hover:text-black"
+                  onClick={handleLoginClick}
+                >
+                  Iniciar Sessió
+                </Button>
+                <Button 
+                  className="bg-cyber text-black hover:bg-cyber/80"
+                  onClick={handleRegisterClick}
+                >
+                  Registrar-se
+                </Button>
+              </>
+            )}
           </div>
 
           <div className="flex md:hidden">
@@ -97,12 +138,34 @@ const Navbar = () => {
               Informació
             </Link>
             <div className="pt-4 flex flex-col space-y-3">
-              <Button variant="outline" className="w-full border-cyber text-cyber hover:bg-cyber hover:text-black">
-                Iniciar Sessió
-              </Button>
-              <Button className="w-full bg-cyber text-black hover:bg-cyber/80">
-                Registrar-se
-              </Button>
+              {isAuthenticated ? (
+                <>
+                  <span className="text-gray-300 mb-2">Hola, {user?.username}</span>
+                  <Button 
+                    variant="outline" 
+                    className="w-full border-cyber text-cyber hover:bg-cyber hover:text-black"
+                    onClick={handleLogout}
+                  >
+                    Tancar Sessió
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button 
+                    variant="outline" 
+                    className="w-full border-cyber text-cyber hover:bg-cyber hover:text-black"
+                    onClick={handleLoginClick}
+                  >
+                    Iniciar Sessió
+                  </Button>
+                  <Button 
+                    className="w-full bg-cyber text-black hover:bg-cyber/80"
+                    onClick={handleRegisterClick}
+                  >
+                    Registrar-se
+                  </Button>
+                </>
+              )}
             </div>
           </div>
         </div>

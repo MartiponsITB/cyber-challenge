@@ -1,6 +1,11 @@
 
-import { useParams, Link } from 'react-router-dom';
+import { useState } from 'react';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { useAuth } from '@/contexts/AuthContext';
+import { useChallenges } from '@/contexts/ChallengeContext';
+import { CheckCircle2, XCircle } from 'lucide-react';
 
 // Mock data for the challenges
 const challengesData = {
@@ -56,13 +61,124 @@ const challengesData = {
       'SQLMap (opcional)'
     ]
   },
-  // Més reptes aquí...
+  'exploit-001': {
+    title: 'Atac amb Exploit',
+    description: 'Eleva els teus privilegis d\'usuari normal a root en un sistema Linux utilitzant un exploit.',
+    category: 'Exploit',
+    categoryColor: '#e91e63',
+    difficulty: 'Difícil',
+    points: 600,
+    detailedDescription: `
+      Aquest repte consisteix en trobar i explotar una vulnerabilitat en un sistema Linux per elevar privilegis.
+      
+      Començaràs amb un accés d'usuari normal i hauràs d'aconseguir permisos de root mitjançant l'explotació
+      d'alguna vulnerabilitat del sistema o serveis.
+      
+      Objectiu: Aconseguir permisos de root i obtenir la flag amagada al directori /root.
+    `,
+    prerequisites: [
+      'Coneixements de sistemes Linux',
+      'Comprensió de permisos i gestió d\'usuaris',
+      'Familiaritat amb exploits comuns'
+    ],
+    tools: [
+      'Eines de reconeixement de sistema',
+      'Eines d\'explotació',
+      'Coneixements de shell scripting'
+    ]
+  },
+  'defense-001': {
+    title: 'Defensa de Sistemes',
+    description: 'Configura un sistema segur i defensa\'l contra diferents vectors d\'atac.',
+    category: 'Defensa',
+    categoryColor: '#00bcd4',
+    difficulty: 'Mitjà',
+    points: 450,
+    detailedDescription: `
+      Aquest repte es centra en la configuració segura d'un sistema.
+      
+      Hauràs de configurar correctament un firewall, gestionar permisos i usuaris,
+      i implementar bones pràctiques de seguretat per evitar diferents tipus d'atacs.
+      
+      Objectiu: Configurar correctament el sistema i trobar la flag que es generarà automàticament
+      un cop el sistema estigui segur.
+    `,
+    prerequisites: [
+      'Coneixements de configuració de firewall',
+      'Gestió segura d\'usuaris i permisos',
+      'Comprensió de bones pràctiques de seguretat'
+    ],
+    tools: [
+      'Eines de configuració de firewall',
+      'Utilitats de gestió de permisos',
+      'Eines d\'auditoria de seguretat'
+    ]
+  },
+  'forensic-001': {
+    title: 'Anàlisi Forense',
+    description: 'Investiga un incident de seguretat i identifica com es va produir l\'atac.',
+    category: 'Forense',
+    categoryColor: '#3f51b5',
+    difficulty: 'Mitjà',
+    points: 550,
+    detailedDescription: `
+      En aquest repte hauràs d'analitzar les evidències d'un sistema compromès.
+      
+      La teva tasca és investigar logs, fitxers i altres evidències per determinar
+      com es va produir l'atac, quines accions va realitzar l'atacant i quins sistemes
+      van ser compromesos.
+      
+      Objectiu: Reconstruir la cronologia de l'atac i trobar la flag amagada en les evidències.
+    `,
+    prerequisites: [
+      'Coneixements d\'anàlisi forense digital',
+      'Comprensió de logs de sistema',
+      'Familiaritat amb eines d\'anàlisi forense'
+    ],
+    tools: [
+      'Eines d\'anàlisi forense',
+      'Utilitats d\'anàlisi de logs',
+      'Eines de recuperació de dades (opcional)'
+    ]
+  },
+  'hackathon': {
+    title: 'Repte Final',
+    description: 'Un repte especial que combina totes les habilitats apreses durant la competició.',
+    category: 'Especial',
+    categoryColor: '#ff9800',
+    difficulty: 'Expert',
+    points: 1000,
+    detailedDescription: `
+      Aquest és el repte final de la competició, que combina elements de tots els reptes anteriors.
+      
+      Hauràs d'aplicar totes les habilitats apreses per superar una sèrie de desafiaments
+      interconnectats que posen a prova tant les teves capacitats ofensives com defensives.
+      
+      Objectiu: Completar tota la cadena d'atacs i defenses per obtenir la flag final.
+    `,
+    prerequisites: [
+      'Haver completat tots els altres reptes',
+      'Coneixements en múltiples àrees de ciberseguretat',
+      'Capacitat per combinar diferents tècniques i eines'
+    ],
+    tools: [
+      'Totes les eines utilitzades en els reptes anteriors',
+      'Creativitat i pensament lateral',
+      'Capacitat d\'anàlisi i resolució de problemes'
+    ]
+  }
 };
 
 const ChallengeDetail = () => {
   const { id } = useParams<{ id: string }>();
+  const { isAuthenticated } = useAuth();
+  const { submitFlag, challenges, isHackathonUnlocked } = useChallenges();
+  const [flag, setFlag] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [flagResult, setFlagResult] = useState<'correct' | 'incorrect' | null>(null);
+  const navigate = useNavigate();
   
-  // Si no existeix l'ID o no es troba el repte, mostrem un missatge d'error
+  // If the challenge ID doesn't exist, show an error message
   if (!id || !challengesData[id as keyof typeof challengesData]) {
     return (
       <div className="py-16">
@@ -77,7 +193,47 @@ const ChallengeDetail = () => {
     );
   }
   
+  // Check if the challenge is hackathon and it's not unlocked
+  if (id === 'hackathon' && !isHackathonUnlocked) {
+    return (
+      <div className="py-16">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h1 className="text-3xl font-bold text-cyber mb-4">Repte Bloquejat</h1>
+          <p className="text-gray-300 mb-8">
+            Aquest repte està bloquejat. Has de completar tots els altres reptes per desbloquejar-lo.
+          </p>
+          <Button asChild>
+            <Link to="/challenges">Tornar als reptes</Link>
+          </Button>
+        </div>
+      </div>
+    );
+  }
+  
   const challenge = challengesData[id as keyof typeof challengesData];
+  
+  // Find if the challenge is completed
+  const currentChallengeProgress = challenges.find(c => c.id === id);
+  const isCompleted = currentChallengeProgress?.completed || false;
+  
+  const handleFlagSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!isAuthenticated) {
+      navigate('/login');
+      return;
+    }
+    
+    setIsSubmitting(true);
+    setFlagResult(null);
+    
+    try {
+      const success = await submitFlag(id, flag);
+      setFlagResult(success ? 'correct' : 'incorrect');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
   
   return (
     <div className="py-16">
@@ -150,22 +306,66 @@ const ChallengeDetail = () => {
         </div>
         
         <div className="mt-12 cyber-card">
-          <h2 className="text-xl font-bold cyber-text mb-4">Envia la teva flag</h2>
-          <div className="bg-black cyber-border rounded-md p-4 mb-4">
-            <div className="flex items-center">
-              <input
-                type="text"
-                placeholder="flag{...}"
-                className="bg-transparent border-none text-white flex-grow focus:outline-none focus:ring-0"
-              />
-              <Button className="ml-2 bg-cyber text-black hover:bg-cyber/80">
-                Verificar
+          <h2 className="text-xl font-bold cyber-text mb-4">
+            Envia la teva flag
+            {isCompleted && (
+              <span className="ml-2 text-green-500 inline-flex items-center">
+                <CheckCircle2 className="w-5 h-5 mr-1" /> Completat
+              </span>
+            )}
+          </h2>
+          
+          {!isAuthenticated ? (
+            <div className="text-center py-4">
+              <p className="text-gray-300 mb-4">Has d'iniciar sessió per enviar la flag.</p>
+              <Button 
+                asChild
+                className="bg-cyber text-black hover:bg-cyber/80"
+              >
+                <Link to="/login">Iniciar sessió</Link>
               </Button>
             </div>
-          </div>
-          <p className="text-gray-400 text-sm">
-            La flag ha de seguir el format: flag&#123;text_aquí&#125;
-          </p>
+          ) : (
+            <form onSubmit={handleFlagSubmit}>
+              <div className="bg-black cyber-border rounded-md p-4 mb-4">
+                <div className="flex items-center">
+                  <Input
+                    type="text"
+                    placeholder="Introdueix la flag..."
+                    className="bg-transparent border-none text-white flex-grow focus:outline-none focus:ring-0"
+                    value={flag}
+                    onChange={(e) => setFlag(e.target.value)}
+                    disabled={isSubmitting || isCompleted}
+                  />
+                  <Button 
+                    type="submit" 
+                    className="ml-2 bg-cyber text-black hover:bg-cyber/80"
+                    disabled={isSubmitting || isCompleted || !flag}
+                  >
+                    {isSubmitting ? 'Verificant...' : 'Verificar'}
+                  </Button>
+                </div>
+              </div>
+              
+              {flagResult === 'correct' && (
+                <div className="flex items-center text-green-500 mb-4">
+                  <CheckCircle2 className="w-5 h-5 mr-2" />
+                  <span>Correcte! Has resolt el repte.</span>
+                </div>
+              )}
+              
+              {flagResult === 'incorrect' && (
+                <div className="flex items-center text-red-500 mb-4">
+                  <XCircle className="w-5 h-5 mr-2" />
+                  <span>Flag incorrecta. Torna a intentar-ho.</span>
+                </div>
+              )}
+              
+              <p className="text-gray-400 text-sm">
+                Assegura't d'introduir la flag exactament com l'has trobada.
+              </p>
+            </form>
+          )}
         </div>
       </div>
     </div>
