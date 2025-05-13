@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import Trophy from '@/components/Trophy';
-import { listOrderedIcon } from 'lucide-react';
+import { ListOrderedIcon } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import {
   Table,
