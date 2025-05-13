@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAuth } from '@/contexts/AuthContext';
 import { useChallenges } from '@/contexts/ChallengeContext';
-import { CheckCircle2, XCircle } from 'lucide-react';
+import { CheckCircle2, XCircle, Download } from 'lucide-react';
 import CountdownTimer from '@/components/CountdownTimer';
 
 // Mock data for the challenges
@@ -285,11 +285,11 @@ const ChallengeDetail = () => {
             </div>
           )}
           
-          <Button className="cyber-button w-full py-3 mb-4">
-            <svg className="mr-2 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-            </svg>
-            Descarregar OVA
+          <Button className="cyber-button w-full py-3 mb-4" asChild>
+            <a href={`https://example.com/downloads/${id}.ova`} download target="_blank" rel="noopener noreferrer">
+              <Download className="mr-2 h-5 w-5" />
+              Descarregar OVA
+            </a>
           </Button>
         </div>
         
