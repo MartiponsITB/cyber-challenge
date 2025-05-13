@@ -11,29 +11,61 @@ if (!isset($_SESSION['user_id'])) {
 
 $user_id = $_SESSION['user_id'];
 
-// Count completed challenges excluding hackathon
-$sql = "SELECT COUNT(*) as completed FROM user_progress up 
-        JOIN challenges c ON up.challenge_id = c.id 
-        WHERE up.user_id = ? AND up.completed = 1 AND c.id != 'hackathon'";
+// Check if all challenges except the hackathon are completed
+$sql = "SELECT COUNT(*) as total_completed 
+        FROM user_progress 
+        WHERE user_id = ? AND challenge_id != 'hackathon' AND completed = 1";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
 $result = $stmt->get_result();
 $row = $result->fetch_assoc();
 
-// Get total challenges excluding hackathon
-$total_sql = "SELECT COUNT(*) as total FROM challenges WHERE id != 'hackathon'";
-$total_result = $conn->query($total_sql);
+// Count total challenges excluding hackathon
+$total_challenges_sql = "SELECT COUNT(*) as total FROM challenges WHERE id != 'hackathon'";
+$total_result = $conn->query($total_challenges_sql);
 $total_row = $total_result->fetch_assoc();
 
-$is_unlocked = ($row['completed'] >= $total_row['total']);
+$is_unlocked = ($row['total_completed'] >= $total_row['total']);
 
-echo json_encode([
-    'success' => true,
-    'isUnlocked' => $is_unlocked,
-    'completed' => $row['completed'],
-    'total' => $total_row['total']
-]);
+// If hackathon is unlocked, check if we need to initialize the timer
+if ($is_unlocked) {
+    // Check if timer entry exists
+    $check_timer_sql = "SELECT * FROM hackathon_timer WHERE user_id = ?";
+    $check_stmt = $conn->prepare($check_timer_sql);
+    $check_stmt->bind_param("i", $user_id);
+    $check_stmt->execute();
+    $timer_result = $check_stmt->get_result();
+    
+    // If no timer entry exists and hackathon is unlocked, create one
+    if ($timer_result->num_rows == 0) {
+        $insert_timer_sql = "INSERT INTO hackathon_timer (user_id, unlocked_at) VALUES (?, NOW())";
+        $insert_stmt = $conn->prepare($insert_timer_sql);
+        $insert_stmt->bind_param("i", $user_id);
+        $insert_stmt->execute();
+    }
+    
+    // Get timer data for the response
+    $timer_sql = "SELECT 
+                    unlocked_at, 
+                    completed_at,
+                    TIMESTAMPDIFF(SECOND, unlocked_at, NOW()) as elapsed_seconds,
+                    completion_time_seconds
+                  FROM hackathon_timer 
+                  WHERE user_id = ?";
+    $timer_stmt = $conn->prepare($timer_sql);
+    $timer_stmt->bind_param("i", $user_id);
+    $timer_stmt->execute();
+    $timer_data = $timer_stmt->get_result()->fetch_assoc();
+    
+    echo json_encode([
+        'success' => true, 
+        'isUnlocked' => $is_unlocked,
+        'timerData' => $timer_data
+    ]);
+} else {
+    echo json_encode(['success' => true, 'isUnlocked' => $is_unlocked]);
+}
 
 $stmt->close();
 $conn->close();

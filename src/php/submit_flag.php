@@ -38,6 +38,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $update_stmt->bind_param("is", $user_id, $challenge_id);
             $update_stmt->execute();
             
+            // If this is the hackathon challenge, update the timer
+            if ($challenge_id === 'hackathon') {
+                // Get the unlocked time
+                $timer_sql = "SELECT unlocked_at FROM hackathon_timer WHERE user_id = ?";
+                $timer_stmt = $conn->prepare($timer_sql);
+                $timer_stmt->bind_param("i", $user_id);
+                $timer_stmt->execute();
+                $timer_result = $timer_stmt->get_result();
+                
+                if ($timer_result->num_rows === 1) {
+                    $timer_data = $timer_result->fetch_assoc();
+                    
+                    // Calculate completion time in seconds
+                    $completion_sql = "UPDATE hackathon_timer 
+                                       SET completed_at = NOW(),
+                                           completion_time_seconds = TIMESTAMPDIFF(SECOND, unlocked_at, NOW())
+                                       WHERE user_id = ?";
+                    $completion_stmt = $conn->prepare($completion_sql);
+                    $completion_stmt->bind_param("i", $user_id);
+                    $completion_stmt->execute();
+                }
+            }
+            
             echo json_encode(['success' => true, 'message' => 'Flag is correct!']);
         } else {
             echo json_encode(['success' => false, 'message' => 'Incorrect flag']);

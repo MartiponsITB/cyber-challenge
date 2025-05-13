@@ -11,10 +11,18 @@ interface Challenge {
   completed: boolean;
 }
 
+interface TimerData {
+  unlocked_at: string;
+  completed_at: string | null;
+  elapsed_seconds: number;
+  completion_time_seconds: number | null;
+}
+
 interface ChallengeContextType {
   challenges: Challenge[];
   isHackathonUnlocked: boolean;
   isLoading: boolean;
+  timerData: TimerData | null;
   submitFlag: (challengeId: string, flag: string) => Promise<boolean>;
   refreshProgress: () => Promise<void>;
 }
@@ -24,6 +32,7 @@ const ChallengeContext = createContext<ChallengeContextType | undefined>(undefin
 export const ChallengeProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [challenges, setChallenges] = useState<Challenge[]>([]);
   const [isHackathonUnlocked, setIsHackathonUnlocked] = useState(false);
+  const [timerData, setTimerData] = useState<TimerData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const { isAuthenticated } = useAuth();
   const { toast } = useToast();
@@ -36,6 +45,7 @@ export const ChallengeProvider: React.FC<{ children: ReactNode }> = ({ children 
       setIsLoading(false);
       setChallenges([]);
       setIsHackathonUnlocked(false);
+      setTimerData(null);
     }
   }, [isAuthenticated]);
 
@@ -62,6 +72,9 @@ export const ChallengeProvider: React.FC<{ children: ReactNode }> = ({ children 
       
       if (data.success) {
         setIsHackathonUnlocked(data.isUnlocked);
+        if (data.timerData) {
+          setTimerData(data.timerData);
+        }
       }
     } catch (error) {
       console.error('Error checking hackathon status:', error);
@@ -119,6 +132,7 @@ export const ChallengeProvider: React.FC<{ children: ReactNode }> = ({ children 
         challenges,
         isHackathonUnlocked,
         isLoading,
+        timerData,
         submitFlag,
         refreshProgress
       }}

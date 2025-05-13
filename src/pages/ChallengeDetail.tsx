@@ -1,11 +1,12 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAuth } from '@/contexts/AuthContext';
 import { useChallenges } from '@/contexts/ChallengeContext';
 import { CheckCircle2, XCircle } from 'lucide-react';
+import CountdownTimer from '@/components/CountdownTimer';
 
 // Mock data for the challenges
 const challengesData = {
@@ -172,11 +173,17 @@ const challengesData = {
 const ChallengeDetail = () => {
   const { id } = useParams<{ id: string }>();
   const { isAuthenticated } = useAuth();
-  const { submitFlag, challenges, isHackathonUnlocked } = useChallenges();
+  const { submitFlag, challenges, isHackathonUnlocked, timerData } = useChallenges();
   const [flag, setFlag] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [flagResult, setFlagResult] = useState<'correct' | 'incorrect' | null>(null);
   const navigate = useNavigate();
+  
+  // Calculate the 48-hour total in seconds
+  const HACKATHON_TIME_LIMIT = 48 * 60 * 60; // 48 hours in seconds
+  
+  // Check if the current challenge is the hackathon
+  const isHackathonChallenge = id === 'hackathon';
   
   // If the challenge ID doesn't exist, show an error message
   if (!id || !challengesData[id as keyof typeof challengesData]) {
@@ -267,6 +274,16 @@ const ChallengeDetail = () => {
           </div>
           
           <p className="text-gray-300 mb-8">{challenge.description}</p>
+          
+          {isHackathonChallenge && timerData && (
+            <div className="mb-8">
+              <CountdownTimer 
+                startTimeSeconds={timerData.elapsed_seconds} 
+                totalSeconds={HACKATHON_TIME_LIMIT}
+                isCompleted={isCompleted}
+              />
+            </div>
+          )}
           
           <Button className="cyber-button w-full py-3 mb-4">
             <svg className="mr-2 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">

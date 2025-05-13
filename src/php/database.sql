@@ -32,6 +32,15 @@ CREATE TABLE IF NOT EXISTS user_progress (
     FOREIGN KEY (challenge_id) REFERENCES challenges(id)
 );
 
+-- Hackathon timer table to track when users unlock the hackathon
+CREATE TABLE IF NOT EXISTS hackathon_timer (
+    user_id INT PRIMARY KEY,
+    unlocked_at TIMESTAMP NULL,
+    completed_at TIMESTAMP NULL,
+    completion_time_seconds INT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
 -- Insert the challenge data
 INSERT INTO challenges (id, title, flag, category, points) VALUES
 ('net-001', 'Repte de Xarxes', '853212745123:)', 'Xarxes', 500),
