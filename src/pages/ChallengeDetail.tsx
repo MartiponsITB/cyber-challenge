@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -18,7 +19,7 @@ const ovaFilePaths = {
     { label: 'Descarregar OVA (Víctima)', path: '/ova/repte_exploit_victima.ova' },
     { label: 'Descarregar OVA (Atacant)', path: '/ova/repte_exploit_atacant.ova' }
   ],
-  'net-001': [{ label: 'Descarregar OVA', path: '/ova/repte xarxes.ova' }],
+  'net-001': [{ label: 'Descarregar OVA', path: '/ova/repte_xarxes.ova' }],
   'forensic-001': [
     { label: 'Descarregar OVA (Víctima)', path: '/ova/repte_escalada_victima.ova' },
     { label: 'Descarregar OVA (Atacant)', path: '/ova/repte_escalada_atacant.ova' }
