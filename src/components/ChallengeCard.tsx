@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { useChallenges } from '@/contexts/ChallengeContext';
 import { useAuth } from '@/contexts/AuthContext';
-import { CheckCircle2, Download } from 'lucide-react';
+import { CheckCircle2 } from 'lucide-react';
 
 interface ChallengeCardProps {
   id: string;
@@ -29,28 +29,20 @@ const ChallengeCard = ({ id, title, description, category, categoryColor }: Chal
         {category}
       </span>
       <p className="text-gray-300 text-sm mb-6 flex-grow">{description}</p>
-      {isCompleted ? (
-        <Button className="cyber-button w-full mt-auto" asChild>
-          <Link to={`/challenges/${id}`}>
-            <CheckCircle2 className="mr-2 h-5 w-5" />
-            Completat
-          </Link>
-        </Button>
-      ) : (
-        <div className="flex flex-col sm:flex-row gap-2 mt-auto">
-          <Button className="cyber-button w-full" asChild>
-            <Link to={`/challenges/${id}`}>
+      <Button className="cyber-button w-full mt-auto" asChild>
+        <Link to={`/challenges/${id}`}>
+          {isCompleted ? (
+            <>
+              <CheckCircle2 className="mr-2 h-5 w-5" />
+              Completat
+            </>
+          ) : (
+            <>
               Iniciar Repte
-            </Link>
-          </Button>
-          <Button className="cyber-button w-full" asChild>
-            <a href={`https://example.com/downloads/${id}.ova`} download target="_blank" rel="noopener noreferrer">
-              <Download className="mr-2 h-5 w-5" />
-              Descarregar OVA
-            </a>
-          </Button>
-        </div>
-      )}
+            </>
+          )}
+        </Link>
+      </Button>
     </div>
   );
 };

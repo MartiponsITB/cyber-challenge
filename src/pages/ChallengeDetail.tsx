@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -7,6 +6,28 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useChallenges } from '@/contexts/ChallengeContext';
 import { CheckCircle2, XCircle, Download } from 'lucide-react';
 import CountdownTimer from '@/components/CountdownTimer';
+
+// Mapa de correspondencias entre IDs de retos y rutas de descarga OVA
+const ovaFilePaths = {
+  'defense-001': [{ label: 'Descarregar OVA', path: '/ova/repte_defensa.ova' }],
+  'sql-001': [
+    { label: 'Descarregar OVA (Víctima)', path: '/ova/repte_sql_victima.ova' },
+    { label: 'Descarregar OVA (Atacant)', path: '/ova/repte_sql_atacant.ova' }
+  ],
+  'exploit-001': [
+    { label: 'Descarregar OVA (Víctima)', path: '/ova/repte_exploit_victima.ova' },
+    { label: 'Descarregar OVA (Atacant)', path: '/ova/repte_exploit_atacant.ova' }
+  ],
+  'net-001': [{ label: 'Descarregar OVA', path: '/ova/repte xarxes.ova' }],
+  'forensic-001': [
+    { label: 'Descarregar OVA (Víctima)', path: '/ova/repte_escalada_victima.ova' },
+    { label: 'Descarregar OVA (Atacant)', path: '/ova/repte_escalada_atacant.ova' }
+  ],
+  'hackathon': [
+    { label: 'Descarregar OVA (Víctima)', path: '/ova/hackaton_victima.ova' },
+    { label: 'Descarregar OVA (Atacant)', path: '/ova/hackaton_atacant.ova' }
+  ]
+};
 
 // Mock data for the challenges
 const challengesData = {
@@ -242,6 +263,9 @@ const ChallengeDetail = () => {
     }
   };
   
+  // Get OVA download options for the current challenge
+  const ovaDownloads = ovaFilePaths[id as keyof typeof ovaFilePaths] || [];
+  
   return (
     <div className="py-16">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -285,12 +309,18 @@ const ChallengeDetail = () => {
             </div>
           )}
           
-          <Button className="cyber-button w-full py-3 mb-4" asChild>
-            <a href={`https://example.com/downloads/${id}.ova`} download target="_blank" rel="noopener noreferrer">
-              <Download className="mr-2 h-5 w-5" />
-              Descarregar OVA
-            </a>
-          </Button>
+          {ovaDownloads.length > 0 && (
+            <div className="space-y-2 mb-4">
+              {ovaDownloads.map((ova, index) => (
+                <Button key={index} className="cyber-button w-full py-3" asChild>
+                  <a href={ova.path} download target="_blank" rel="noopener noreferrer">
+                    <Download className="mr-2 h-5 w-5" />
+                    {ova.label}
+                  </a>
+                </Button>
+              ))}
+            </div>
+          )}
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
