@@ -1,7 +1,5 @@
-
 const HowItWorks = () => {
-  return (
-    <section className="py-16">
+  return <section className="py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 className="text-3xl font-mono font-bold text-center cyber-text mb-16">Com funciona</h2>
         
@@ -41,14 +39,8 @@ const HowItWorks = () => {
           <p className="text-lg text-cyber font-bold">[ Completa el repte i puja la flag ]</p>
         </div>
         
-        <p className="text-center text-gray-400 max-w-3xl mx-auto">
-          Després de trobar la flag oculta, envia-la a la plataforma per validar el repte i desbloquejar
-          nous desafiaments. Cada repte superat t'aproparà més a convertir-te en un expert en
-          ciberseguretat.
-        </p>
+        <p className="text-center text-gray-400 max-w-3xl mx-auto">Després de trobar la flag oculta, envia-la a la plataforma per validar el repte i avançar a nous desafiaments. Cada repte superat t'aproparà més a convertir-te en un expert en ciberseguretat.</p>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default HowItWorks;
