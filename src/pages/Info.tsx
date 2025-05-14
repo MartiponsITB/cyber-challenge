@@ -81,7 +81,7 @@ const Info = () => {
             Si tens dubtes, suggeriments o problemes amb la plataforma, no dubtis a contactar-nos:
           </p>
           <ul className="text-gray-300">
-            <li><strong className="text-white">Email:</strong> info@cyberchallenge.com</li>
+            <li><strong className="text-white">Email:</strong> cyberchallenge@gmail.com</li>
             <li><strong className="text-white">Twitter:</strong> @CyberChallenge</li>
             <li><strong className="text-white">Discord:</strong> Uneix-te al nostre servidor</li>
           </ul>
