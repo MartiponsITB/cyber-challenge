@@ -40,10 +40,10 @@ const challengesData = {
     difficulty: 'Mitjà',
     points: 500,
     detailedDescription: `
-      Aquest repte se centra en la identificació i explotació de vulnerabilitats en la configuració d'un servidor SSH.
+      Aquest repte és centra en la identificació i explotació de vulnerabilitats en la configuració d'un servidor SSH.
       
       Hauràs d'utilitzar eines d'escaneig de xarxes per identificar serveis, trobar possibles vulnerabilitats
-      i explotar-les per obtenir accés no autoritzat al sistema.
+      i explotar-els per obtenir accés no autoritzat al sistema.
       
       Objectiu: Aconseguir la contrasenya d'administrador i obtenir la flag amagada al sistema.
     `,
@@ -59,135 +59,165 @@ const challengesData = {
     ]
   },
   'sql-001': {
-    title: 'Atac SQL',
-    description: 'Accedeix a una base de dades protegida utilitzant tècniques d\'injecció SQL.',
+    title: 'Repte SQL',
+    description: 'Descobreix vulnerabilitats en un sistema Linux i aconsegueix accés root superant diverses fases d\'explotació.',
     category: 'Web',
     categoryColor: '#9c27b0',
     difficulty: 'Difícil',
     points: 750,
     detailedDescription: `
-      En aquest repte, t'enfrontaràs a una aplicació web vulnerable a atacs d'injecció SQL.
+      Aquest repte es centra en posar a prova la capacitat d'anàlisi, enumeració, explotació i escalada de privilegis dins d'un entorn Linux simulat.
       
-      La teva missió és explotar aquesta vulnerabilitat per accedir a dades protegides a la base de dades.
-      Necessitaràs entendre com funcionen les consultes SQL i com pots manipular-les per obtenir informació no autoritzada.
+      L'objectiu és accedir a una màquina donis d'un portal web aparentment inofensiu, descobrir vulnerabilitats com SQL Injection, aprofitar configuracions errònies (com crons o serveis amb permisos elevats) i escalar privilegis fins obtenir accés root.
       
-      Objectiu: Aconseguir accés a la base de dades i trobar la flag amagada entre les taules.
+      Caldrà interactuar amb serveis com Apatxe, SQLite3, i scripts cron, a més d'identificar usuaris amagats i tokens secrets.
+      
+      Objectiu: Obtenir accés root i descobrir la flag amagada al sistema.
     `,
     prerequisites: [
-      'Coneixements bàsics de SQL',
-      'Comprensió de les vulnerabilitats d\'injecció SQL',
-      'Familiaritat amb aplicacions web'
+      'Coneixements bàsics de sistemes Linux',
+      'Familiaritat amb serveis com Apache, cron i SUID',
+      'Comprensió de vulnerabilitats comunes: SQL Injection, enginyeria social, escalada de privilegis',
+      'Ús de comandes de xarxa com curl, nc, nmap, etc.'
     ],
     tools: [
-      'Navegador web',
-      'Eines de proxy com Burp Suite (opcional)',
-      'SQLMap (opcional)'
+      'Nmap o altres eines d\'escaneig de xarxa',
+      'Curl i Netcat per provar connexions i enviar peticions',
+      'Burp Suite (opcional, per manipular peticions web)',
+      'Python per scripts de connexió o explotació',
+      'Eines de força bruta (opcional)',
+      'SQLmap (opcional, per aprofitar vulnerabilitats SQL)'
     ]
   },
   'exploit-001': {
-    title: 'Atac amb Exploit',
-    description: 'Eleva els teus privilegis d\'usuari normal a root en un sistema Linux utilitzant un exploit.',
+    title: 'Repte Exploit',
+    description: 'Aprofita una vulnerabilitat en WebDAV per aconseguir una connexió inversa i obtenir accés root.',
     category: 'Exploit',
     categoryColor: '#e91e63',
-    difficulty: 'Difícil',
-    points: 600,
+    difficulty: 'Mitjà',
+    points: 500,
     detailedDescription: `
-      Aquest repte consisteix en trobar i explotar una vulnerabilitat en un sistema Linux per elevar privilegis.
+      Aquest repte posa a prova la capacitat de detectar i aprofitar una vulnerabilitat de WebDAV en un servidor Apache 2.4.58 funcionant sobre Ubuntu Server.
       
-      Començaràs amb un accés d'usuari normal i hauràs d'aconseguir permisos de root mitjançant l'explotació
-      d'alguna vulnerabilitat del sistema o serveis.
+      Mitjançant aquesta vulnerabilitat, l'usuari pot pujar fitxers maliciosos i executar-los per aconseguir una connexió inversa i obtenir accés a la màquina amb privilegis.
       
-      Objectiu: Aconseguir permisos de root i obtenir la flag amagada al directori /root.
+      Passos clau del repte:
+      Configurar xarxa i màquines virtuals
+      Explorar el servidor vulnerable
+      Verificar suport WebDAV
+      Crear i pujar un payload PHP
+      Obtenir una shell inversa
+      Llegir la flag des del sistema víctima
     `,
     prerequisites: [
-      'Coneixements de sistemes Linux',
-      'Comprensió de permisos i gestió d\'usuaris',
-      'Familiaritat amb exploits comuns'
+      'Coneixements bàsics de xarxa i configuració IP',
+      'Experiència amb Apache, WebDAV i serveis HTTP',
+      'Habilitats en reconeixement de serveis amb nmap, curl',
+      'Familiaritat amb creació i execució de payloads en PHP',
+      'Ús d\'eines com netcat, nano, curl, nmap'
     ],
     tools: [
-      'Eines de reconeixement de sistema',
-      'Eines d\'explotació',
-      'Coneixements de shell scripting'
+      'Kali Linux com a màquina atacant',
+      'nmap per detectar serveis i mètodes HTTP',
+      'curl per provar mètodes HTTP i pujar fitxers via WebDAV',
+      'netcat (nc) per escoltar connexions inverses',
+      'PHP per crear una shell inversa',
+      'VirtualBox amb adaptadors de xarxa configurats (Host-Only)',
+      'Script de shell inversa PHP amb connexió a IP atacant',
+      'Editor de text (nano, vim)',
+      'Accés a la flag: /root/flag.txt'
     ]
   },
   'defense-001': {
-    title: 'Defensa de Sistemes',
-    description: 'Configura un sistema segur i defensa\'l contra diferents vectors d\'atac.',
+    title: 'Repte Defensa',
+    description: 'Corregeix una configuració insegura d\'un sistema Linux i protegeix-lo eliminant vulnerabilitats crítiques.',
     category: 'Defensa',
     categoryColor: '#00bcd4',
     difficulty: 'Mitjà',
     points: 450,
     detailedDescription: `
-      Aquest repte es centra en la configuració segura d'un sistema.
+      Aquest repte consisteix a revisar una màquina Linux amb configuració insegura i corregir vulnerabilitats crítiques per tal de protegir-la.
       
-      Hauràs de configurar correctament un firewall, gestionar permisos i usuaris,
-      i implementar bones pràctiques de seguretat per evitar diferents tipus d'atacs.
+      L'objectiu és identificar i eliminar serveis insegurs, arxius sensibles exposats, permisos inadequats, i garantir una configuració segura del sistema.
       
-      Objectiu: Configurar correctament el sistema i trobar la flag que es generarà automàticament
-      un cop el sistema estigui segur.
+      L'usuari haurà de:
+      Tancar serveis obsolets com FTP i Telnet
+      Configurar correctament Apache2 i activar HTTPS
+      Esborrar arxius confidencials accessibles via web
+      Corregir permisos de fitxers crítics del sistema
+      Executar un script de validació per comprovar que tot està protegit
     `,
     prerequisites: [
-      'Coneixements de configuració de firewall',
-      'Gestió segura d\'usuaris i permisos',
-      'Comprensió de bones pràctiques de seguretat'
+      'Coneixement bàsic d\'administració de sistemes Linux',
+      'Familiaritat amb serveis com Apache, FTP, Telnet',
+      'Experiència amb permisos de fitxers (chmod)',
+      'Ús de comandes com ss, nano, systemctl, rm, chmod',
+      'Coneixement de vulnerabilitats habituals en sistemes exposats a xarxa'
     ],
     tools: [
-      'Eines de configuració de firewall',
-      'Utilitats de gestió de permisos',
-      'Eines d\'auditoria de seguretat'
+      'Editor de text: nano o vim',
+      'Comandes de xarxa: ss, netstat, curl, nc',
+      'Apache2 amb mòduls SSL activats',
+      'Script de validació: /opt/check.sh',
+      'Systemd (systemctl) per gestionar serveis',
+      'Comandes bàsiques de fitxers: chmod, rm, ls, etc.'
     ]
   },
   'forensic-001': {
-    title: 'Anàlisi Forense',
+    title: 'Repte Escalada',
     description: 'Investiga un incident de seguretat i identifica com es va produir l\'atac.',
     category: 'Forense',
     categoryColor: '#3f51b5',
     difficulty: 'Mitjà',
     points: 550,
     detailedDescription: `
-      En aquest repte hauràs d'analitzar les evidències d'un sistema compromès.
+      Aquest repte és centra en la identificació i explotació de vulnerabilitats en la configuració d'un servidor SSH.
       
-      La teva tasca és investigar logs, fitxers i altres evidències per determinar
-      com es va produir l'atac, quines accions va realitzar l'atacant i quins sistemes
-      van ser compromesos.
+      Hauràs d'utilitzar eines d'escaneig de xarxes per identificar serveis, trobar possibles vulnerabilitats
+      i explotar-els per obtenir accés no autoritzat al sistema.
       
-      Objectiu: Reconstruir la cronologia de l'atac i trobar la flag amagada en les evidències.
+      Objectiu: Aconseguir la contrasenya d'administrador i obtenir la flag amagada al sistema.
     `,
     prerequisites: [
-      'Coneixements d\'anàlisi forense digital',
-      'Comprensió de logs de sistema',
-      'Familiaritat amb eines d\'anàlisi forense'
+      'Coneixements bàsics de xarxes',
+      'Familiaritat amb SSH',
+      'Comprensió de les vulnerabilitats comunes en configuracions de xarxa'
     ],
     tools: [
-      'Eines d\'anàlisi forense',
-      'Utilitats d\'anàlisi de logs',
-      'Eines de recuperació de dades (opcional)'
+      'Nmap o altres escàners de xarxa',
+      'Client SSH',
+      'Eines de força bruta (opcional)'
     ]
   },
   'hackathon': {
-    title: 'Repte Final',
-    description: 'Un repte especial que combina totes les habilitats apreses durant la competició.',
+    title: 'Hackathon',
+    description: 'Descobreix vulnerabilitats en un sistema Linux i aconsegueix accés root superant diverses fases d\'explotació.',
     category: 'Especial',
     categoryColor: '#ff9800',
     difficulty: 'Expert',
     points: 1000,
     detailedDescription: `
-      Aquest és el repte final de la competició, que combina elements de tots els reptes anteriors.
+      Aquest repte es centra en posar a prova la capacitat d'anàlisi, enumeració, explotació i escalada de privilegis dins d'un entorn Linux simulat.
       
-      Hauràs d'aplicar totes les habilitats apreses per superar una sèrie de desafiaments
-      interconnectats que posen a prova tant les teves capacitats ofensives com defensives.
+      L'objectiu és accedir a una màquina donis d'un portal web aparentment inofensiu, descobrir vulnerabilitats com SQL Injection, aprofitar configuracions errònies (com crons o serveis amb permisos elevats) i escalar privilegis fins obtenir accés root.
       
-      Objectiu: Completar tota la cadena d'atacs i defenses per obtenir la flag final.
+      Caldrà interactuar amb serveis com Apatxe, SQLite3, i scripts cron, a més d'identificar usuaris amagats i tokens secrets.
+      
+      Objectiu: Obtenir accés root i descobrir la flag amagada al sistema.
     `,
     prerequisites: [
-      'Haver completat tots els altres reptes',
-      'Coneixements en múltiples àrees de ciberseguretat',
-      'Capacitat per combinar diferents tècniques i eines'
+      'Coneixements bàsics de sistemes Linux',
+      'Familiaritat amb serveis com Apache, cron i SUID',
+      'Comprensió de vulnerabilitats comunes: SQL Injection, enginyeria social, escalada de privilegis',
+      'Ús de comandes de xarxa com curl, nc, nmap, etc.'
     ],
     tools: [
-      'Totes les eines utilitzades en els reptes anteriors',
-      'Creativitat i pensament lateral',
-      'Capacitat d\'anàlisi i resolució de problemes'
+      'Nmap o altres eines d\'escaneig de xarxa',
+      'Curl i Netcat per provar connexions i enviar peticions',
+      'Burp Suite (opcional, per manipular peticions web)',
+      'Python per scripts de connexió o explotació',
+      'Eines de força bruta (opcional)',
+      'SQLmap (opcional, per aprofitar vulnerabilitats SQL)'
     ]
   }
 };
