@@ -66,27 +66,25 @@ const challengesData = {
     difficulty: 'Difícil',
     points: 750,
     detailedDescription: `
-      Aquest repte es centra en posar a prova la capacitat d'anàlisi, enumeració, explotació i escalada de privilegis dins d'un entorn Linux simulat.
+      Aquest repte es centra en la identificació i explotació de vulnerabilitats de tipus injecció SQL (SQLi) dins d'una aplicació web que utilitza PostgreSQL com a motor de base de dades.
       
-      L'objectiu és accedir a una màquina donis d'un portal web aparentment inofensiu, descobrir vulnerabilitats com SQL Injection, aprofitar configuracions errònies (com crons o serveis amb permisos elevats) i escalar privilegis fins obtenir accés root.
+      És tracta d'un laboratori dissenyat per posar a prova tècniques d'enumeració, injecció bàsica i avançada, i va unir de taules (UNION SELECT). A més, inclou configuracions de seguretat reals que l'atacant haurà de comprendre i, si pot, esquivar.
       
-      Caldrà interactuar amb serveis com Apatxe, SQLite3, i scripts cron, a més d'identificar usuaris amagats i tokens secrets.
-      
-      Objectiu: Obtenir accés root i descobrir la flag amagada al sistema.
+      Objectiu: Obtenir informació confidencial de la base de dades (com usuaris i contrasenyes en text pla) mitjançant injeccions SQL en una interfície web vulnerable.
     `,
     prerequisites: [
-      'Coneixements bàsics de sistemes Linux',
-      'Familiaritat amb serveis com Apache, cron i SUID',
-      'Comprensió de vulnerabilitats comunes: SQL Injection, enginyeria social, escalada de privilegis',
-      'Ús de comandes de xarxa com curl, nc, nmap, etc.'
+      'Coneixement de sintaxi SQL (consultes SELECT, WHERE, JOIN…)',
+      'Comprensió del concepte d'injecció SQL',
+      'Familiaritat amb consultes UNION SELECT',
+      'Coneixement bàsic d'Apache i fitxers .htaccess',
+      'Entendre els conceptes de permisos i privilegis en bases de dades'
     ],
     tools: [
-      'Nmap o altres eines d\'escaneig de xarxa',
-      'Curl i Netcat per provar connexions i enviar peticions',
-      'Burp Suite (opcional, per manipular peticions web)',
-      'Python per scripts de connexió o explotació',
-      'Eines de força bruta (opcional)',
-      'SQLmap (opcional, per aprofitar vulnerabilitats SQL)'
+      'Navegador web',
+      'Proxy com Burp Suite o ZAP per modificar peticions HTTP',
+      'sqlmap per automatitzar la detecció d'injeccions SQL',
+      'PostgreSQL CLI o DBeaver per explorar bases de dades si s'hi accedeix',
+      'dig, nslookup o eines de DNS si cal resoldre noms locals (/etc/hosts)'
     ]
   },
   'exploit-001': {
@@ -171,22 +169,25 @@ const challengesData = {
     difficulty: 'Mitjà',
     points: 550,
     detailedDescription: `
-      Aquest repte és centra en la identificació i explotació de vulnerabilitats en la configuració d'un servidor SSH.
+      Aquest repte es centra en la identificació i explotació de vulnerabilitats dins d'una màquina interna amb serveis mal configurats, amb l'objectiu final d'escalar privilegis i obtenir accés root.
       
-      Hauràs d'utilitzar eines d'escaneig de xarxes per identificar serveis, trobar possibles vulnerabilitats
-      i explotar-els per obtenir accés no autoritzat al sistema.
+      L'escenari simula un entorn real amb un servidor Ubuntu amb Apatxe i WebDAV habilitat, on calç obtenir una shell inicial (a través d'un fitxer PHP pujat) i, posteriorment, aprofitar configuracions errònies com cronjobs editables per escalar privilegis i llegir una flag amagada dins de /etc/passwd.
       
-      Objectiu: Aconseguir la contrasenya d'administrador i obtenir la flag amagada al sistema.
+      Objectiu: Obtenir una shell inicial, escalar privilegis fins root i trobar la flag amagada: CTF{privesc_root_success}.
     `,
     prerequisites: [
-      'Coneixements bàsics de xarxes',
-      'Familiaritat amb SSH',
-      'Comprensió de les vulnerabilitats comunes en configuracions de xarxa'
+      'Coneixements bàsics de serveis web (Apache)',
+      'Familiaritat amb permisos de sistema i cronjobs',
+      'Experiència prèvia amb escalada de privilegis',
+      'Comprensió del funcionament de WebDAV i execució de scripts PHP'
     ],
     tools: [
-      'Nmap o altres escàners de xarxa',
-      'Client SSH',
-      'Eines de força bruta (opcional)'
+      'Nmap o altres eines d\'escaneig de ports',
+      'Un navegador web o curl per interactuar amb el servidor WebDAV',
+      'Reverse shell generators (com php-reverse-shell)',
+      'Eines per gestionar shells no interactives (socat, stty, python)',
+      'linpeas, pspy, o altres eines d\'enumeració local',
+      'Coneixements de crontab i bash scripting'
     ]
   },
   'hackathon': {
