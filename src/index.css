@@ -78,10 +78,10 @@
     @apply text-cyber animate-glow;
   }
   .cyber-border {
-    @apply border border-cyber rounded;
+    @apply border border-cyber/70 rounded shadow-sm shadow-cyber/20;
   }
   .cyber-card {
-    @apply bg-card cyber-border p-4;
+    @apply bg-card/80 cyber-border p-4 backdrop-blur-sm;
   }
   .cyber-button {
     @apply bg-black border border-cyber text-cyber hover:bg-cyber hover:text-black transition-colors duration-200 rounded font-medium;
@@ -91,5 +91,35 @@
   }
   .badge {
     @apply text-xs font-semibold px-2.5 py-0.5 rounded;
+  }
+  
+  /* New styles */
+  .glow-border {
+    box-shadow: 0 0 5px theme('colors.cyber.DEFAULT'), 0 0 10px rgba(0, 255, 157, 0.2);
+  }
+  
+  .glow-text {
+    text-shadow: 0 0 5px theme('colors.cyber.DEFAULT'), 0 0 10px rgba(0, 255, 157, 0.2);
+  }
+  
+  .challenge-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+}
+
+@layer utilities {
+  .animate-pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+  
+  @keyframes pulse-glow {
+    0%, 100% {
+      box-shadow: 0 0 5px theme('colors.cyber.DEFAULT'), 0 0 10px rgba(0, 255, 157, 0.2);
+    }
+    50% {
+      box-shadow: 0 0 10px theme('colors.cyber.DEFAULT'), 0 0 20px rgba(0, 255, 157, 0.4);
+    }
   }
 }

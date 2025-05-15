@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -76,12 +75,22 @@ export default {
 				glow: {
 					'0%, 100%': { textShadow: '0 0 5px #00ff9d, 0 0 10px #00ff9d' },
 					'50%': { textShadow: '0 0 15px #00ff9d, 0 0 20px #00ff9d' }
+				},
+				'border-glow': {
+					'0%, 100%': { boxShadow: '0 0 5px #00ff9d, 0 0 10px rgba(0, 255, 157, 0.2)' },
+					'50%': { boxShadow: '0 0 10px #00ff9d, 0 0 20px rgba(0, 255, 157, 0.4)' }
+				},
+				floating: {
+					'0%, 100%': { transform: 'translateY(0)' },
+					'50%': { transform: 'translateY(-10px)' }
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
-				glow: 'glow 2s ease-in-out infinite'
+				glow: 'glow 2s ease-in-out infinite',
+				'border-glow': 'border-glow 2s ease-in-out infinite',
+				floating: 'floating 3s ease-in-out infinite'
 			}
 		}
 	},
