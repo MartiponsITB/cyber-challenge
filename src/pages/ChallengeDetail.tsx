@@ -74,16 +74,16 @@ const challengesData = {
     `,
     prerequisites: [
       'Coneixement de sintaxi SQL (consultes SELECT, WHERE, JOIN…)',
-      'Comprensió del concepte d'injecció SQL',
+      'Comprensió del concepte d\'injecció SQL',
       'Familiaritat amb consultes UNION SELECT',
-      'Coneixement bàsic d'Apache i fitxers .htaccess',
+      'Coneixement bàsic d\'Apache i fitxers .htaccess',
       'Entendre els conceptes de permisos i privilegis en bases de dades'
     ],
     tools: [
       'Navegador web',
       'Proxy com Burp Suite o ZAP per modificar peticions HTTP',
-      'sqlmap per automatitzar la detecció d'injeccions SQL',
-      'PostgreSQL CLI o DBeaver per explorar bases de dades si s'hi accedeix',
+      'sqlmap per automatitzar la detecció d\'injeccions SQL',
+      'PostgreSQL CLI o DBeaver per explorar bases de dades si s\'hi accedeix',
       'dig, nslookup o eines de DNS si cal resoldre noms locals (/etc/hosts)'
     ]
   },
