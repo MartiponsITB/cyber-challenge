@@ -81,7 +81,7 @@
     @apply border border-cyber/70 rounded shadow-sm shadow-cyber/20;
   }
   .cyber-card {
-    @apply bg-card/80 cyber-border p-4 backdrop-blur-sm;
+    @apply bg-card/80 cyber-border p-6 backdrop-blur-sm rounded-lg;
   }
   .cyber-button {
     @apply bg-black border border-cyber text-cyber hover:bg-cyber hover:text-black transition-colors duration-200 rounded font-medium;
@@ -107,6 +107,30 @@
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 2rem;
   }
+  
+  /* Hero section gradient effect */
+  .hero-gradient {
+    background: linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 100%);
+  }
+  
+  /* Enhanced cyber card */
+  .enhanced-cyber-card {
+    @apply p-6 rounded-lg transition-all duration-300;
+    background: rgba(18, 18, 18, 0.7);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(0, 255, 157, 0.3);
+    box-shadow: 0 8px 32px rgba(0, 255, 157, 0.1);
+  }
+  
+  /* Matrix-like background */
+  .matrix-bg {
+    background-color: rgba(0, 0, 0, 0.9);
+    background-image: 
+      radial-gradient(rgba(0, 255, 157, 0.1) 1px, transparent 1px),
+      radial-gradient(rgba(0, 255, 157, 0.05) 1px, transparent 1px);
+    background-size: 20px 20px;
+    background-position: 0 0, 10px 10px;
+  }
 }
 
 @layer utilities {
@@ -116,10 +140,39 @@
   
   @keyframes pulse-glow {
     0%, 100% {
+      text-shadow: 0 0 5px theme('colors.cyber.DEFAULT'), 0 0 10px rgba(0, 255, 157, 0.2);
+    }
+    50% {
+      text-shadow: 0 0 15px theme('colors.cyber.DEFAULT'), 0 0 20px rgba(0, 255, 157, 0.4);
+    }
+  }
+  
+  .animate-border-glow {
+    animation: border-glow 2s ease-in-out infinite;
+  }
+  
+  @keyframes border-glow {
+    0%, 100% {
       box-shadow: 0 0 5px theme('colors.cyber.DEFAULT'), 0 0 10px rgba(0, 255, 157, 0.2);
     }
     50% {
       box-shadow: 0 0 10px theme('colors.cyber.DEFAULT'), 0 0 20px rgba(0, 255, 157, 0.4);
+    }
+  }
+  
+  .animate-fade-in {
+    opacity: 0;
+    animation: fade-in 0.8s ease-out forwards;
+  }
+  
+  @keyframes fade-in {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
     }
   }
 }

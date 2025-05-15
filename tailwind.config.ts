@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -83,6 +84,19 @@ export default {
 				floating: {
 					'0%, 100%': { transform: 'translateY(0)' },
 					'50%': { transform: 'translateY(-10px)' }
+				},
+				'fade-in': {
+					'0%': { opacity: '0', transform: 'translateY(20px)' },
+					'100%': { opacity: '1', transform: 'translateY(0)' }
+				},
+				'scale-pulse': {
+					'0%, 100%': { transform: 'scale(1)' },
+					'50%': { transform: 'scale(1.05)' }
+				},
+				'matrix-fall': {
+					'0%': { transform: 'translateY(-100%)', opacity: '0' },
+					'50%': { opacity: '1' },
+					'100%': { transform: 'translateY(100%)', opacity: '0' }
 				}
 			},
 			animation: {
@@ -90,7 +104,10 @@ export default {
 				'accordion-up': 'accordion-up 0.2s ease-out',
 				glow: 'glow 2s ease-in-out infinite',
 				'border-glow': 'border-glow 2s ease-in-out infinite',
-				floating: 'floating 3s ease-in-out infinite'
+				floating: 'floating 3s ease-in-out infinite',
+				'fade-in': 'fade-in 0.8s ease-out forwards',
+				'scale-pulse': 'scale-pulse 3s ease-in-out infinite',
+				'matrix-fall': 'matrix-fall 10s linear infinite'
 			}
 		}
 	},

@@ -21,19 +21,19 @@ const ChallengeCard = ({ id, title, description, category, categoryColor }: Chal
   const isCompleted = isAuthenticated && challenges.find(c => c.id === id)?.completed;
   
   return (
-    <Card className="cyber-card h-full transition-all duration-300 hover:shadow-lg hover:shadow-cyber/20 flex flex-col">
+    <Card className="cyber-card h-full transition-all duration-300 hover:shadow-lg hover:shadow-cyber/30 hover:translate-y-[-5px] flex flex-col">
       <CardHeader className="pb-2">
         <div className="flex justify-between items-start mb-2">
-          <h3 className="text-xl font-bold text-cyber">{title}</h3>
+          <h3 className="text-xl font-bold text-cyber glow-text">{title}</h3>
           {isCompleted && (
-            <div className="bg-green-500/20 p-1 rounded-full">
+            <div className="bg-green-500/20 p-1 rounded-full animate-pulse">
               <CheckCircle2 className="w-5 h-5 text-green-500" />
             </div>
           )}
         </div>
         <span 
           className="badge text-xs font-semibold px-2.5 py-1 rounded inline-block" 
-          style={{ backgroundColor: categoryColor }}
+          style={{ backgroundColor: categoryColor, boxShadow: `0 0 8px ${categoryColor}` }}
         >
           {category}
         </span>
